@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Cookies from 'js-cookie';
 import account from "../assets/account.png";
 
 import axios from "axios";
@@ -25,11 +25,16 @@ const Login = () => {
    
       setEmail("");
       setPassword("");
-     
-      localStorage.setItem('Token', fetchData?.data.token);
+      // console.log(fetchData.data.token );
+
+      if(fetchData.status == 200){
+        Cookies.set('token',fetchData.data.token , { expires: 7, path: '/' });
+        navigate("/");
+        console.log("Login successful");
+      }
+
       // dispatch(login());
-      navigate("/");
-      console.log("Login successful");
+      
     } catch (error) {
       console.log(error);
     }

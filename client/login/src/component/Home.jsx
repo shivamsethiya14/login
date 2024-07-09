@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [users, setUsers] = useState([]);
-
+ const navigate=useNavigate();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+       if(Cookies.get("token") != null){
         const response = await axios.get('http://localhost:8000/api/users/');
-        console.log(response.data.alluser);
+        // console.log(response.data.alluser);
         setUsers(response.data.alluser);
+       }else{
+        navigate("/sigin")
+       }
+        
       } catch (error) {
         console.error('Error fetching users:', error);
       }
